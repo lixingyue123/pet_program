@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>宠物医院管理系统</title>
+</head>
+<body>
+<script>
+    window.onload=function () {
+        document.getElementById("btn").onclick = function () {
+            //发送ajaxpost请求
+            //第一步创建ajax核心对象XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            //第二步，注册回调函数
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        //alert("连接成功")
+                        //alert(this.responseText)
+                        //document.getElementById("stutbody").innerHTML = this.responseText
+                        //将json格式字符转化成json对象
+                         var stuList=JSON.parse(this.responseText)//数组中有多个数据
+                         var html=""
+                         for(var i=0;i<stuList.length;i++) {
+                             //var html=""
+                             var stu = stuList[i]
+                             html += "<tr>"
+                             html += "<td>" + (i + 1) + "</td>"
+                             html += "<td>" + stu.pet_ID + "</td>"
+                             html += "<td>" + stu.pet_Name + "</td>"
+                             html += "<td>" + stu.Age + "</td>"
+                             html += "<td>" + stu.Sex + "</td>"
+                             html += "<td>" + stu.visit_time + "</td>"
+                             html += "<td>" + stu.visit_attention + "</td>"
+                             html += "</tr>"
+
+                         }
+                        document.getElementById("stutbody").innerHTML=html
+
+                    } else {
+                        alert("报错" + this.status)
+                    }
+                }
+            }
+            //开启通道
+            xhr.open("POST", "ajax", true)
+           // xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+         //   var username=document.getElementById("username").value;
+           // var password=document.getElementById("password").value;
+            //发送请求
+            xhr.send()
+        }
+    }
+
+</script>
+<input type="button" value="显示宠物医院就诊信息" id="btn">
+
+<table width="50%" border="=1px">
+    <tr>
+        <th>序号</th>
+        <th>宠物ID</th>
+        <th>宠物名字</th>
+        <th>宠物年龄</th>
+        <th>宠物性别</th>
+        <th>就诊时间</th>
+        <th>就诊情况</th>
+    </tr>
+    <tbody id="stutbody"></tbody>
+</table>
+</body>
+</html>
